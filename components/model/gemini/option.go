@@ -32,6 +32,7 @@ type options struct {
 	CachedContentName  string
 	ResponseLogprobs   *bool
 	Logprobs           *int32
+	Labels             map[string]string
 }
 
 func WithTopK(k int32) model.Option {
@@ -89,5 +90,15 @@ func WithResponseLogprobs(enable bool) model.Option {
 func WithLogprobs(k int32) model.Option {
 	return model.WrapImplSpecificOptFn(func(o *options) {
 		o.Logprobs = &k
+	})
+}
+
+// WithLabels sets user-defined metadata labels on the request.
+// Labels are key-value pairs that can be used for billing attribution,
+// request tracking, and filtering in Cloud Logging and Monitoring.
+// Optional.
+func WithLabels(labels map[string]string) model.Option {
+	return model.WrapImplSpecificOptFn(func(o *options) {
+		o.Labels = labels
 	})
 }
